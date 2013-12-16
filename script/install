@@ -4,7 +4,9 @@
 
 set -e
 
-cd "$(dirname $0)"/..
+if [ -z "$CONFIG_ROOT" ]; then
+    export CONFIG_ROOT=`dirname $(find $HOME -name .configroot -print -quit)`
+fi 
 
 # find the installers and run them iteratively
-find . -name install.sh | while read installer ; do sh -c "${installer}" ; done
+find $CONFIG_ROOT -path backups -prune -o -name install.sh -print | while read installer ; do sh -c "${installer}" ; done

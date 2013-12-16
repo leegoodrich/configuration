@@ -2,14 +2,13 @@
 #
 # bootstrap installs things.
 
-DOTFILES_ROOT="`pwd`"
-
 set -e
 
-echo ''
+CONFIGURATION_REPO="stuff"
+
 
 info () {
-  printf "  [ \033[00;34m..\033[0m ] $1"
+  printf "  [ \033[00;34m..\033[0m ] $1\n"
 }
 
 user () {
@@ -26,8 +25,18 @@ fail () {
   exit
 }
 
+establish_config_directory () {
+    if [ -z "$CONFIG_ROOT" ]; then
+        export CONFIG_ROOT=`dirname $(find $HOME -name .configroot -maxdepth 2 -print -quit) 2>/dev/null`
+    fi 
+
+    if [ -z "$CONFIG_ROOT" ]; then
+        info "No configuration root found. Cloning repository"
+    fi
+}
+
 setup_gitconfig () {
-  if ! [ -f git/gitconfig.symlink ]
+  if ! [ -f $CONFIG_ROOT/git/gitconfig.symlink ]
   then
     info 'setup gitconfig'
 
@@ -60,7 +69,7 @@ install_dotfiles () {
   backup_all=false
   skip_all=false
 
-  for source in `find $DOTFILES_ROOT -maxdepth 2 -name \*.symlink`
+  for source in `find $CONFIG_ROOT -maxdepth 2 -name \*.symlink`
   do
     dest="$HOME/.`basename \"${source%.*}\"`"
 
@@ -120,20 +129,21 @@ install_dotfiles () {
   done
 }
 
+run_install_scripts () {
+    info "Running install scripts"
+    # find the installers and run them iteratively. Skip any backups folders
+    find $CONFIG_ROOT -path backups -prune -o -name install.sh -print | while read installer ; do 
+        sh -c "${installer}"
+        success "${installer} ran successfully"
+    done
+}
+
+echo ''
+
+establish_config_directory
 setup_gitconfig
 install_dotfiles
-
-# If we're on a Mac, let's install and setup homebrew.
-if [ "$(uname -s)" == "Darwin" ]
-then
-  info "installing dependencies"
-  if . bin/dot > /tmp/dotfiles-dot 2>&1
-  then
-    success "dependencies installed"
-  else
-    fail "error installing dependencies"
-  fi
-fi
+run_install_scripts
 
 echo ''
 echo '  All installed!'

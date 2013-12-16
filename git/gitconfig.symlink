@@ -4,15 +4,15 @@
 [hub]
         protocol = https
 [user]
-        name = AUTHORNAME
-        email = AUTHOREMAIL
+        name = Lee Goodrich
+        email = leegoodrich@gmail.com
 [credential]
-        helper = GIT_CREDENTIAL_HELPER
+        helper = osxkeychain
 [alias]
         co = checkout
-        promote = !$ZSH/bin/git-promote
-        wtf     = !$ZSH/bin/git-wtf
-        rank-contributers = !$ZSH/bin/git-rank-contributers
+        promote = !$CONFIG_ROOT/bin/git/git-promote
+        wtf     = !$CONFIG_ROOT/bin/git/git-wtf
+        rank-contributers = !$CONFIG_ROOT/bin/git/git-rank-contributers
         count   = !git shortlog -sn
 [color]
         diff = auto
