@@ -4,8 +4,7 @@
 
 set -e
 
-CONFIGURATION_REPO="stuff"
-
+CONFIG_REPO="https://github.com/leegoodrich/configuration.git"
 
 info () {
   printf "  [ \033[00;34m..\033[0m ] $1\n"
@@ -27,11 +26,33 @@ fail () {
 
 establish_config_directory () {
     if [ -z "$CONFIG_ROOT" ]; then
-        export CONFIG_ROOT=`dirname $(find $HOME -name .configroot -maxdepth 2 -print -quit) 2>/dev/null`
+        local config=`dirname $(find $HOME -name .configroot -maxdepth 2 -print -quit) 2>/dev/null`
+
+        if [ -n "$config" ]; then
+            echo "found $config"
+            export CONFIG_ROOT=$config
+        else
+            echo "did not find $config"
+            export CONFIG_ROOT=$HOME/Configuration
+        fi
     fi 
 
-    if [ -z "$CONFIG_ROOT" ]; then
-        info "No configuration root found. Cloning repository"
+    if [ ! -f "$CONFIG_ROOT/.configroot" ]; then
+        user " - No configuration root found. Should I clone '$CONFIG_REPO' into '$CONFIG_ROOT'? (y/N)"
+        read -n 1 -r
+        echo
+
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
+            git clone $CONFIG_REPO $CONFIG_ROOT
+
+            if [ $? -ne 0 ]; then
+                fail "Could not clone configuration repository. Bailing"
+            fi
+            return 0
+        fi
+
+        exit 1 # Only gets here if answer is no or something messes up
     fi
 }
 
