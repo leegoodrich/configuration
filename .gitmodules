@@ -1,3 +1,12 @@
 [submodule "amazon"]
 	path = amazon
 	url = ssh://goodrich.desktop.amazon.com/home/goodrich/git/amazon.git
+[submodule "modules/history-substring-search/external"]
+	path = zsh/zprezto.symlink/modules/history-substring-search/external
+	url = https://github.com/zsh-users/zsh-history-substring-search.git
+[submodule "modules/syntax-highlighting/external"]
+	path = zsh/zprezto.symlink/modules/syntax-highlighting/external
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "modules/completion/external"]
+	path = zsh/zprezto.symlink/modules/completion/external
+	url = https://github.com/zsh-users/zsh-completions.git
