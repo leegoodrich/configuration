@@ -44,7 +44,11 @@ establish_config_directory () {
 
         if [[ $REPLY =~ ^[Yy]$ ]]
         then
-            git clone $CONFIG_REPO $CONFIG_ROOT
+            if [[ $(hostname) =~ .*amazon\.com$ ]] ; then 
+                git clone --recursive $CONFIG_REPO $CONFIG_ROOT
+            else
+                git clone $CONFIG_REPO $CONFIG_ROOT
+            fi
 
             if [ $? -ne 0 ]; then
                 fail "Could not clone configuration repository. Bailing"
