@@ -1,0 +1,3 @@
+[submodule "amazon"]
+	path = amazon
+	url = ssh://goodrich.desktop.amazon.com/home/goodrich/git/amazon.git

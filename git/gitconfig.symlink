@@ -1,38 +1,19 @@
-# Sample gitconfig
-#
-
-[hub]
-        protocol = https
 [user]
-        name = Lee Goodrich
-        email = leegoodrich@gmail.com
-[credential]
-        helper = osxkeychain
+    email = goodrich@amazon.com
+    name = Lee Goodrich
+[push]
+    default = simple
 [alias]
-        co = checkout
-        promote = !$CONFIG_ROOT/bin/git/git-promote
-        wtf     = !$CONFIG_ROOT/bin/git/git-wtf
-        rank-contributers = !$CONFIG_ROOT/bin/git/git-rank-contributers
-        count   = !git shortlog -sn
-[color]
-        diff = auto
-        status = auto
-        branch = auto
-        ui = true
+    st  = status
+    ci  = commit
+    br  = branch
+    co  = checkout
+    df  = diff
+    dc  = diff --cached
+    lg  = log -p
+    who = shortlog -s --
+    wtf = !$CONFIG_ROOT/bin/git/git-wtf
+    promote = !$CONFIG_ROOT/bin/git/git-promote
 [core]
         excludesfile = ~/.gitignore
         editor = vim
-[apply]
-        whitespace = nowarn
-[mergetool]
-        keepBackup = false
-[difftool]
-        prompt = false
-[help]
-        autocorrect = 1
-[push]
-        # See `git help config` (search for push.default)
-        # for more information on different options of the below setting.
-        #
-        # Setting to git 2.0 default to surpress warning message
-        default = simple

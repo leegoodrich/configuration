@@ -12,11 +12,16 @@ if [ "$(uname -s)" == "Darwin" ]; then
     then
       echo "  Installing Homebrew for you."
       ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)" > /tmp/homebrew-install.log
+    else
+      echo "  Updating Homebrew for you."
+        brew update
     fi
+
+
 
     # Install homebrew packages
     for formula in grc coreutils spark wget; do
-        brew list $formula >/dev/null 2>1
+        brew list $formula >/dev/null 2>&1
         if [ $? -ne 0 ]; then
             echo "homebrew: installing $formula"
             brew install $formula
