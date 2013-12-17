@@ -26,7 +26,7 @@ fail () {
 
 establish_config_directory () {
     if [ -z "$CONFIG_ROOT" ]; then
-        local config=`dirname $(find $HOME -name .configroot -maxdepth 2 -print -quit) 2>/dev/null`
+        local config=`dirname $(find $HOME -maxdepth 2 -name .configroot -print -quit) 2>/dev/null`
 
         if [ -n "$config" ]; then
             echo "found $config"

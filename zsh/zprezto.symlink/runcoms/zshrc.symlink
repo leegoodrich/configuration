@@ -6,21 +6,30 @@
 #
 
 # shortcut to the configuration root
-export CONFIG_ROOT=`dirname $(find $HOME -name .configroot -maxdepth 2 -print -quit)`
+export CONFIG_ROOT=`dirname $(find $HOME -maxdepth 2 -name .configroot  -print -quit)`
 
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+if [[ -z "$LEGACY_ZSH" ]] && [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+else
+    setopt EXTENDED_GLOB
+
+    # load all *.zsh.backup files to take over for prezto
+    for file in $CONFIG_ROOT/**(^zprezto)/*.zsh.legacy
+    do
+      source $file
+    done
 fi
+
 
 # load all *.zsh config files that aren't under zprezto
 for file in $CONFIG_ROOT/**(^zprezto)/*.zsh
 do
-  source $file
+    source $file
 done
 
 # Add any bin/ directories into the path
-for bin_dir in $(find $CONFIG_ROOT -type d -name bin -maxdepth 3)
+for bin_dir in $(find $CONFIG_ROOT -maxdepth 3 -type d -name bin)
 do
     export PATH=$PATH:$bin_dir
 done
