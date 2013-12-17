@@ -94,7 +94,8 @@ install_dotfiles () {
   backup_all=false
   skip_all=false
 
-  for source in `find $CONFIG_ROOT -maxdepth 4 -name \*.symlink`
+  # Don't include any directories with backups in the name
+  for source in `find $CONFIG_ROOT -name backups -prune -o -name *.symlink -print`
   do
     dest="$HOME/.`basename \"${source%.*}\"`"
 
